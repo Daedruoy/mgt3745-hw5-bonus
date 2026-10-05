@@ -25,3 +25,10 @@ errors; never throw to the console.
 **When:** a delegated feature's EARS rows require new server-side behavior.
 **Do:** before writing the prompt, read every EARS row for the feature; if any requires new server behavior, either name the server file explicitly as in-scope ("you may add one endpoint to worker.js, using bind() for all user values") or descope the feature so it doesn't need one. State plainly whether any URL given to the tool is live production data.
 **Because:** "modify only these three files" plus an EARS row requiring a new endpoint is an unsolvable constraint; bolt resolved it by fabricating client-side storage instead of flagging the conflict.
+
+## Pattern: where a small project sits on the serverless spectrum
+**When:** deciding whether a project should move hosting.
+**Spectrum, most managed to most control:** scripting tools like Apps Script, then functions on a platform like Cloudflare Workers, then containers on Cloud Run, then virtual machines you patch yourself. Each step buys flexibility and costs setup and upkeep.
+**Mine:** Nu Mu Chapter Updates is on the functions step, Worker plus D1, because one chapter with a few dozen rows needs almost none of the flexibility above it.
+**Graduation trigger:** move only if the tool needs a long-running job, a library the Worker runtime cannot run, a container, or more than one chapter.
+**Because:** ADR-003. Cloud Run needed a billing account, three enabled services, and an IAM fix before my first deploy, so the move has a real cost.

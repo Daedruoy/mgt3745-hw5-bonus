@@ -112,5 +112,13 @@ I will keep Worker + D1 as the backend. I will deploy one small Cloud Run servic
 ### Consequences
 Staying means the tool cannot run long jobs, use libraries the Worker runtime doesn't support, or run containers. If the chapter ever wants a scheduled digest or anything computation-heavy, that will be harder here. Staying also means I finish this bonus without real experience of what Cloud Run costs to operate, since the deployment is a small experiment and not a production migration. The Cloud Run scores above are estimates, so this ADR is Provisional: after the build I will add a dated post-build note under it rather than editing the scores.
 
+### Post-build note (2026-10-05)
+
+- **Complexity (estimated 2):** The first deploy failed. The default Compute Engine service account had no roles in the new project, so Cloud Build was denied access to my uploaded source. I fixed it by granting one role, roles/cloudbuild.builds.builder, at project level. Before the first deploy I also had to link billing and enable three services. The estimate held.
+- **Your capability (estimated 2):** I diagnosed the error with help from an AI assistant and web search. I could not have resolved the permission failure on my own. The estimate held.
+- **Cost (estimated 2):** A billing account on trial credit was required and I haven't spent anything.
+
+The dashboard works and its counts match the Worker. It does not change the Gate result: Worker + D1 still wins, and the revisit trigger is unchanged. This ADR stays Provisional.
+
 ### Revisit trigger
 Revisit if the tool needs something a Worker cannot do (a long-running job, an unsupported library, a container), if request volume approaches the Worker free-tier limits, or if more than one chapter starts using it.
